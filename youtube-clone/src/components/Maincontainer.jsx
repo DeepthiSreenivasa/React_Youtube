@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import Sidebar from './Sidebar'
+import FilterChips from './FilterChips'
 import { YOUTUBE_API_URL } from '../constants/contants'
 
 const Maincontainer = () => {
@@ -29,7 +30,10 @@ const Maincontainer = () => {
           <Sidebar></Sidebar>
         </div>
         <div className={`transition-all duration-300 ${sideBarIsOpen ? 'w-3/4' : 'w-full'}`}>
-          <div className="flex flex-wrap gap-6 p-6">
+          <div className="px-6 pt-4">
+            <FilterChips></FilterChips>
+          </div>
+          <div className="flex flex-wrap gap-6 px-6 pb-6">
             {videoData.map((item, index) => (
               <div
                 key={`${item.id?.videoId || item.etag || 'video'}-${index}`}
