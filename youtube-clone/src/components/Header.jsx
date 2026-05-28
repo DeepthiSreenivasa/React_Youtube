@@ -1,4 +1,4 @@
-import { youtubeLogo } from '../constants/contants'
+import { YOUTUBE_LOGO } from '../constants/contants'
 import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
 import SearchIcon from '@mui/icons-material/Search'
@@ -22,11 +22,11 @@ const Header = () => {
         <div className="flex flex-1 items-center gap-4">
           <button
             onClick={() => showOrHideSideBar()}
-            className="flex items-center justify-center rounded-full p-2"
+            className="cursor-pointer flex items-center justify-center rounded-full p-2"
           >
             <MenuIcon />
           </button>
-          <img className="w-36" src={youtubeLogo}></img>
+          <img className="w-36" src={YOUTUBE_LOGO}></img>
         </div>
 
         <div className="flex flex-1 justify-center">
