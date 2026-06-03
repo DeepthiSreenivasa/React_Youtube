@@ -1,6 +1,6 @@
-import { YOUTUBE_LOGO } from '../constants/contants'
+import { YOUTUBE_LOGO, YOUTUBE_SEARCH_API, YOUTUBE_API_KEY } from '../constants/contants'
 import { useDispatch, useSelector } from 'react-redux'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import SearchIcon from '@mui/icons-material/Search'
 import MenuIcon from '@mui/icons-material/Menu'
 import { sideBarToggle } from '../store/userSlice'
@@ -8,12 +8,40 @@ import { sideBarToggle } from '../store/userSlice'
 const Header = () => {
   const [searchText, setSeacrchText] = useState('')
   const userDetails = useSelector((store) => store.userDetails)
-  console.log('userDetails', userDetails)
 
   const dispatch = useDispatch()
 
+  const controller = new AbortController()
+
+  useEffect(() => {
+    let timer = setTimeout(() => {
+      getSearchResults(controller)
+    }, 2000)
+
+    return () => {
+      clearTimeout(timer)
+      controller.abort()
+    }
+  }, [searchText])
+
+  const searchVideoParams = new URLSearchParams({
+    part: 'snippet',
+    maxResults: 20,
+    q: searchText,
+    type: 'video',
+    key: YOUTUBE_API_KEY,
+  })
+
   const showOrHideSideBar = () => {
     dispatch(sideBarToggle())
+  }
+
+  const getSearchResults = (controller) => {
+    fetch('https://dummyjson.com/products/search?q=' + searchText, {
+      signal: controller.signal,
+    })
+      .then((res) => res.json())
+      .then((data) => console.log('SearchData::', data))
   }
 
   return (
@@ -36,7 +64,9 @@ const Header = () => {
               placeholder="Start Searching...."
               type="text"
               value={searchText}
-              onChange={() => {}}
+              onChange={(e) => {
+                setSeacrchText(e.target.value)
+              }}
             ></input>
             <button className="flex items-center justify-center rounded-r-md border border-l-0 border-gray-400 bg-gray-100 px-4 py-2">
               <SearchIcon />
